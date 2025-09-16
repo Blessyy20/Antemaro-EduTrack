@@ -7,7 +7,7 @@ const Home = () => {
       <Text style={styles.title}>📚 E D U T R A C K</Text>
       <Text style={styles.subtitle}>Stay on track, stay ahead.</Text>
 
-       <Link href="/Profile" asChild>
+       <Link href="/profile" asChild>
         <Pressable style={styles.button}>
           <Text style={styles.buttonText}>👩 Profile</Text>
         </Pressable>

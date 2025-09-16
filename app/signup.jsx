@@ -1,117 +1,130 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Pressable,
-  StyleSheet,
-  Alert,
-} from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useState } from "react";
+import { View, Text, TextInput, Pressable, StyleSheet, Alert } from "react-native";
 import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Signup() {
   const router = useRouter();
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSignup = async () => {
-    if (!name.trim() || !email.trim() || !password.trim()) {
+    setError("");
+    if (!email || !password || !confirmPassword) {
+      setError("Please fill all fields");
       Alert.alert("⚠️ Please fill all fields");
       return;
     }
 
-    try {
-      const existingUser = await AsyncStorage.getItem(`user_${email.toLowerCase()}`);
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      Alert.alert("Passwords do not match");
+      return;
+    }
 
-      if (existingUser !== null) {
+    try {
+      const existingUser = await AsyncStorage.getItem(`user_${email}`);
+      if (existingUser) {
+        setError("User already exists. Please log in.");
         Alert.alert("User already exists", "Please log in instead.");
         return;
       }
 
-      const user = {
-        name: name.trim(),
-        email: email.trim().toLowerCase(),
-        password: password.trim(),
-      };
+      const newUser = { email, password };
+      await AsyncStorage.setItem(`user_${email}`, JSON.stringify(newUser));
 
-      await AsyncStorage.setItem(`user_${user.email}`, JSON.stringify(user));
-
-      Alert.alert("✅ Account created!", "Please log in.");
-      router.replace("/login"); // Redirect to login screen, assuming login page is /app/login.js
-    } catch (error) {
-      Alert.alert("❌ Signup failed", "Please try again later.");
-      console.error("Signup error:", error);
+      Alert.alert("✅ Success", "Account created! You can now log in.");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setError("");
+      router.replace("login");
+    } catch (e) {
+      console.error(e);
+      setError("Something went wrong. Please try again.");
+      Alert.alert("Error", "Something went wrong. Please try again.");
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Create Your EduTrack Account</Text>
-
-      <TextInput
-        placeholder="Full Name"
-        value={name}
-        onChangeText={setName}
-        style={styles.input}
-      />
+      <Text style={styles.title}>Create Account ✨</Text>
 
       <TextInput
         placeholder="Email"
         value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
+        onChangeText={(text) => {
+          setEmail(text);
+          setError("");
+        }}
         autoCapitalize="none"
+        keyboardType="email-address"
         style={styles.input}
       />
 
       <TextInput
         placeholder="Password"
         value={password}
-        onChangeText={setPassword}
+        onChangeText={(text) => {
+          setPassword(text);
+          setError("");
+        }}
         secureTextEntry
         style={styles.input}
       />
+
+      <TextInput
+        placeholder="Confirm Password"
+        value={confirmPassword}
+        onChangeText={(text) => {
+          setConfirmPassword(text);
+          setError("");
+        }}
+        secureTextEntry
+        style={styles.input}
+      />
+
+      {error ? <Text style={styles.error}>{error}</Text> : null}
 
       <Pressable style={styles.button} onPress={handleSignup}>
         <Text style={styles.buttonText}>Sign Up</Text>
       </Pressable>
 
-      <Pressable onPress={() => router.push("/login")}>
-        <Text style={styles.link}>Already have an account? Login</Text>
+      {/* 👇 navigate back to Login */}
+      <Pressable onPress={() => router.push("login")}>
+        <Text style={styles.link}>Already have an account? Log In</Text>
       </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center", padding: 20, backgroundColor: "#f3f0ff" },
-  title: { fontSize: 26, fontWeight: "bold", marginBottom: 30, textAlign: "center", color: "#4b2995" },
+  container: { flex: 1, justifyContent: "center", alignItems: "center", padding: 20 },
+  title: { fontSize: 24, fontWeight: "bold", marginBottom: 30, textAlign: "center" },
   input: {
     width: "90%",
-    padding: 14,
+    padding: 12,
     borderWidth: 1,
-    borderColor: "#9b8bf6",
-    borderRadius: 10,
+    borderColor: "#cab0caff",
+    borderRadius: 8,
     marginBottom: 15,
-    backgroundColor: "white",
-    fontSize: 16,
-    color: "#4b2995",
   },
   button: {
     width: "90%",
-    backgroundColor: "#7a68bbff",
+    backgroundColor: "#907df8ff",
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 8,
     alignItems: "center",
     marginVertical: 10,
-    shadowColor: "#8672ddff",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 5,
   },
-  buttonText: { color: "white", fontWeight: "bold", fontSize: 18 },
-  link: { color: "#6a1b9a", marginTop: 15, textDecorationLine: "underline", fontSize: 15 },
+  buttonText: { color: "white", fontWeight: "bold" },
+  link: { color: "#957cf0ff", marginTop: 10 },
+  error: {
+    width: "90%",
+    color: "#2e2236ff",
+    marginBottom: 8,
+    textAlign: "left",
+  },
 });

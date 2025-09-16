@@ -32,7 +32,7 @@ export default function Landing() {
       <Pressable
         style={({ pressed }) => [
           styles.button,
-          { backgroundColor: pressed ? "#c3b0e7ff" : "#7a5cff" },
+          { backgroundColor: pressed ? "#c3b0e7ff" : "#baaaffff" },
         ]}
         onPress={() => router.push("login")}
       >
@@ -45,7 +45,7 @@ export default function Landing() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#4b3eae",
+    backgroundColor: "#b680e2ff",
     justifyContent: "center",
     alignItems: "center",
     padding: 24,

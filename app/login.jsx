@@ -7,46 +7,79 @@ export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleLogin = async () => {
+    setError("");
     if (!email || !password) {
+      setError("Please fill all fields");
       Alert.alert("⚠️ Please fill all fields");
       return;
     }
 
-    const userData = await AsyncStorage.getItem(`user_${email}`);
-    if (!userData) {
-      Alert.alert("User not found", "Please sign up first.");
-      return;
-    }
+    try {
+      const userData = await AsyncStorage.getItem(`user_${email}`);
+      if (!userData) {
+        setError("User not found. Please sign up first.");
+        Alert.alert("User not found", "Please sign up first.");
+        return;
+      }
 
-    const user = JSON.parse(userData);
-    if (user.password !== password) {
-      Alert.alert("Incorrect password", "Please try again.");
-      return;
-    }
+      const user = JSON.parse(userData);
+      if (user.password !== password) {
+        setError("Your Password is Incorrect");
+        Alert.alert("Your Password is Incorrect");
+        return;
+      }
 
-    // Successful login — save session flag
-    await AsyncStorage.setItem("loggedInUser", email);
-    router.replace("/home"); // redirect to home page
+      // ✅ successful login
+      await AsyncStorage.setItem("loggedInUser", email);
+      setEmail("");
+      setPassword("");
+      setError("");
+      router.replace("/home");
+    } catch (e) {
+      console.error(e);
+      setError("Something went wrong. Please try again.");
+      Alert.alert("Error", "Something went wrong. Please try again.");
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome Back!</Text>
+      <Text style={styles.title}>Welcome Back!🩷</Text>
+
       <TextInput
         placeholder="Email"
         value={email}
-        onChangeText={setEmail}
+        onChangeText={(text) => {
+          setEmail(text);
+          setError("");
+        }}
         autoCapitalize="none"
         keyboardType="email-address"
         style={styles.input}
       />
-      <TextInput placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry style={styles.input} />
+
+      <TextInput
+        placeholder="Password"
+        value={password}
+        onChangeText={(text) => {
+          setPassword(text);
+          setError("");
+        }}
+        secureTextEntry
+        style={styles.input}
+      />
+
+      {error ? <Text style={styles.error}>{error}</Text> : null}
+
       <Pressable style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Log In</Text>
       </Pressable>
-      <Pressable onPress={() => router.push("/auth/signup")}>
+
+      {/* 👇 navigate to Sign Up */}
+      <Pressable onPress={() => router.push("signup")}>
         <Text style={styles.link}>Don't have an account? Sign Up</Text>
       </Pressable>
     </View>
@@ -60,7 +93,7 @@ const styles = StyleSheet.create({
     width: "90%",
     padding: 12,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#cab0caff",
     borderRadius: 8,
     marginBottom: 15,
   },
@@ -74,4 +107,10 @@ const styles = StyleSheet.create({
   },
   buttonText: { color: "white", fontWeight: "bold" },
   link: { color: "#957cf0ff", marginTop: 10 },
+  error: {
+    width: "90%",
+    color: "#2e2236ff",
+    marginBottom: 8,
+    textAlign: "left",
+  },
 });

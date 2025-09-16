@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useState } from "react";
+import { useRouter } from "expo-router";
 
 const initialAttendance = [
   { id: "1", date: "Sept 10", status: "Present" },
@@ -21,6 +22,7 @@ export default function Attendance() {
   const [attendanceRecords, setAttendanceRecords] = useState(initialAttendance);
   const [dateInput, setDateInput] = useState("");
   const [statusInput, setStatusInput] = useState("Present"); // default status
+  const router = useRouter();
 
   const addAttendance = () => {
     if (dateInput.trim()) {
@@ -39,6 +41,14 @@ export default function Attendance() {
 
   return (
     <View style={styles.container}>
+      {/* 🔙 Aesthetic Back Button */}
+      <TouchableOpacity
+        onPress={() => router.push("/home")}
+        style={styles.backButton}
+      >
+        <Text style={styles.backButtonText}>← Back</Text>
+      </TouchableOpacity>
+
       <Text style={styles.header}>📊 Attendance</Text>
 
       {/* Minimalist Input Box */}
@@ -106,8 +116,25 @@ const styles = StyleSheet.create({
     backgroundColor: "#a0b3f3ff", // light blue background
     padding: 16,
   },
+
+  /* 🔙 Back Button Style */
+  backButton: {
+    backgroundColor: "#65586bff",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    alignSelf: "flex-start",
+    marginBottom: 10,
+  },
+  backButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+
   header: {
     fontSize: 24,
+    textAlign: "center",
     fontWeight: "bold",
     marginBottom: 20,
     color: "#222",

@@ -1,7 +1,10 @@
-import { View, Text, StyleSheet, TextInput, Pressable, FlatList } from "react-native";
+import { View, Text, StyleSheet, TextInput, Pressable, FlatList, TouchableOpacity } from "react-native";
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Grades() {
+  const navigation = useNavigation();
+
   const [grades, setGrades] = useState([
     { id: "1", subject: "Mathematics", grade: "90%" },
     { id: "2", subject: "Filipino", grade: "91%" },
@@ -120,6 +123,14 @@ export default function Grades() {
 
   return (
     <View style={styles.container}>
+      {/* Back Button */}
+      <TouchableOpacity 
+        style={styles.backButton} 
+        onPress={() => navigation.navigate("home")}
+      >
+        <Text style={styles.backText}>← Back</Text>
+      </TouchableOpacity>
+
       <Text style={styles.title}>📝 View Grades</Text>
 
       <TextInput
@@ -150,7 +161,7 @@ export default function Grades() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: "#a0b3f3ff" },
-  title: { fontSize: 26, fontWeight: "bold", marginBottom: 20 },
+  title: { fontSize: 26, textAlign: "center", fontWeight: "bold", marginBottom: 20 },
 
   input: {
     borderWidth: 1,
@@ -210,4 +221,19 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   buttonText: { color: "white", fontWeight: "bold" },
+
+  /* 🔙 Back Button Style */
+  backButton: {
+    alignSelf: "flex-start",
+    backgroundColor: "#65586bff",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    marginBottom: 10,
+  },
+  backText: {
+    fontSize: 16,
+    color: "white",
+    fontWeight: "600",
+  },
 });

@@ -10,8 +10,10 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+import { useRouter } from "expo-router";
 
 export default function Announcements() {
+  const router = useRouter();
   const EMOJI = "📢 ";
 
   const [announcements, setAnnouncements] = useState([
@@ -74,6 +76,14 @@ export default function Announcements() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
+      {/* 🔙 Back Button */}
+      <TouchableOpacity
+        onPress={() => router.push("/home")}
+        style={styles.backButton}
+      >
+        <Text style={styles.backButtonText}>← Back</Text>
+      </TouchableOpacity>
+
       <Text style={styles.header}>📢 Announcements</Text>
 
       <View style={styles.inputWrapper}>
@@ -85,7 +95,9 @@ export default function Announcements() {
           multiline
         />
         <TouchableOpacity style={styles.button} onPress={handleSave}>
-          <Text style={styles.buttonText}>{editingId ? "Update" : "Add"}</Text>
+          <Text style={styles.buttonText}>
+            {editingId ? "Update" : "Add"}
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -117,12 +129,26 @@ const styles = StyleSheet.create({
     backgroundColor: "#a0b3f3ff",
     padding: 20,
   },
+  /* 🔙 Same back button style as Attendance */
+  backButton: {
+    backgroundColor: "#65586bff",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    alignSelf: "flex-start",
+    marginBottom: 10,
+  },
+  backButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
   header: {
     fontSize: 26,
     fontWeight: "bold",
     marginBottom: 20,
     color: "#222",
-    textAlign: "left",
+    textAlign: "center",
   },
   inputWrapper: {
     flexDirection: "row",

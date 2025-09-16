@@ -1,7 +1,10 @@
 import { View, Text, StyleSheet, FlatList, TextInput, Pressable } from "react-native";
 import { useState } from "react";
+import { useRouter } from "expo-router";
 
 export default function Goals() {
+  const router = useRouter();
+
   const [tasks, setTasks] = useState([]);
   const [input, setInput] = useState("");
   const [editingId, setEditingId] = useState(null);
@@ -72,6 +75,11 @@ export default function Goals() {
 
   return (
     <View style={styles.container}>
+      {/* 🔙 Back Button */}
+      <Pressable style={styles.backButton} onPress={() => router.push("/home")}>
+        <Text style={styles.backButtonText}>← Back</Text>
+      </Pressable>
+
       <Text style={styles.title}>💭 To-Do</Text>
 
       <TextInput
@@ -96,7 +104,23 @@ export default function Goals() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: "#a0b3f3ff" },
-  title: { fontSize: 26, fontWeight: "bold", marginBottom: 20 },
+  title: { fontSize: 26, textAlign: "center", fontWeight: "bold", marginBottom: 20 },
+  
+  /* 🔙 Back Button Style (uniform across app) */
+  backButton: {
+    backgroundColor: "#65586bff",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    alignSelf: "flex-start",
+    marginBottom: 10,
+  },
+  backButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+
   input: {
     borderWidth: 1,
     borderColor: "#ccc",

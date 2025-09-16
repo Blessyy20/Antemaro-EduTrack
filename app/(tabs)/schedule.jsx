@@ -1,7 +1,10 @@
-import { View, Text, StyleSheet, TextInput, Pressable, FlatList } from "react-native";
+import { View, Text, StyleSheet, TextInput, Pressable, FlatList, TouchableOpacity } from "react-native";
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Schedule() {
+  const navigation = useNavigation();
+
   const [schedules, setSchedules] = useState([
     { id: "1", subject: "Mathematics", time: "Monday & Wednesday - 9:00 AM" },
     { id: "2", subject: "Filipino", time: "Monday & Wednesday - 8:00 AM" },
@@ -98,6 +101,14 @@ export default function Schedule() {
 
   return (
     <View style={styles.container}>
+      {/* Back Button */}
+      <TouchableOpacity 
+        style={styles.backButton} 
+        onPress={() => navigation.navigate("home")}
+      >
+        <Text style={styles.backText}>← Back</Text>
+      </TouchableOpacity>
+
       <Text style={styles.title}>📅 Class Schedule</Text>
 
       <TextInput
@@ -127,7 +138,7 @@ export default function Schedule() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: "#a0b3f3ff" },
-  title: { fontSize: 26, fontWeight: "bold", marginBottom: 20 },
+  title: { fontSize: 26, textAlign: "center", fontWeight: "bold", marginBottom: 20 },
 
   input: {
     borderWidth: 1,
@@ -195,5 +206,20 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     fontSize: 13,
+  },
+
+  // Back Button
+  backButton: {
+    alignSelf: "flex-start",
+    backgroundColor: "#65586bff",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    marginBottom: 10,
+  },
+  backText: {
+    fontSize: 16,
+    color: "white",
+    fontWeight: "600",
   },
 });
