@@ -114,7 +114,7 @@ export default function Announcements() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#eef2ff",
+    backgroundColor: "#a0b3f3ff",
     padding: 20,
   },
   header: {

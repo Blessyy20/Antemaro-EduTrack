@@ -16,7 +16,7 @@ export default function Landing() {
 
   return (
     <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
-      <Text style={styles.title}>🎓 Welcome to Edutrack</Text>
+      <Text style={styles.title}>📚 Welcome to Edutrack</Text>
       <Text style={styles.subtitle}>Stay organized. Stay ahead.</Text>
 
       <Pressable
