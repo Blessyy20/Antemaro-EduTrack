@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet, Animated } from "react-native";
+import { View, Text, Pressable, StyleSheet, Animated, Alert } from "react-native";
 import { useRouter } from "expo-router";
 import { useEffect, useRef } from "react";
 
@@ -13,6 +13,13 @@ export default function Landing() {
       useNativeDriver: true,
     }).start();
   }, []);
+
+  // Example logout function — replace with your auth logout logic
+  const handleLogout = () => {
+    Alert.alert("Logged out", "You have been logged out.", [
+      { text: "OK", onPress: () => router.push("login") },
+    ]);
+  };
 
   return (
     <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
@@ -37,6 +44,28 @@ export default function Landing() {
         onPress={() => router.push("login")}
       >
         <Text style={styles.buttonText}>Log In</Text>
+      </Pressable>
+
+      {/* Profile button */}
+      <Pressable
+        style={({ pressed }) => [
+          styles.button,
+          { backgroundColor: pressed ? "#5ca67a" : "#6fd18a" },
+        ]}
+        onPress={() => router.push("profile")}
+      >
+        <Text style={styles.buttonText}>Profile</Text>
+      </Pressable>
+
+      {/* Log Out button */}
+      <Pressable
+        style={({ pressed }) => [
+          styles.button,
+          { backgroundColor: pressed ? "#d14a4a" : "#ff5c5c" },
+        ]}
+        onPress={handleLogout}
+      >
+        <Text style={styles.buttonText}>Log Out</Text>
       </Pressable>
     </Animated.View>
   );

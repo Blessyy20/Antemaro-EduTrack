@@ -14,7 +14,7 @@ export default function Goals() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>✅To-Do</Text>
+      <Text style={styles.title}>💭 To-Do</Text>
 
       <TextInput
         style={styles.input}
