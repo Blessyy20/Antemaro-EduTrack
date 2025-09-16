@@ -93,7 +93,7 @@ export default function Grades() {
           />
           <View style={styles.row}>
             <Pressable style={styles.saveButton} onPress={() => saveEdit(item.id)}>
-              <Text style={styles.buttonText}>Save</Text>
+              <Text style={styles.buttonText}>Update</Text>
             </Pressable>
             <Pressable style={styles.cancelButton} onPress={cancelEditing}>
               <Text style={styles.buttonText}>Cancel</Text>

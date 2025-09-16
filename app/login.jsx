@@ -1,5 +1,14 @@
-import { useState } from "react";
-import { View, Text, TextInput, Pressable, StyleSheet, Alert } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  StyleSheet,
+  Alert,
+  Modal,
+  ScrollView,
+} from "react-native";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -8,6 +17,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
 
   const handleLogin = async () => {
     setError("");
@@ -37,12 +47,17 @@ export default function Login() {
       setEmail("");
       setPassword("");
       setError("");
-      router.replace("/home");
+      setShowDisclaimer(true); // show disclaimer before going to home
     } catch (e) {
       console.error(e);
       setError("Something went wrong. Please try again.");
       Alert.alert("Error", "Something went wrong. Please try again.");
     }
+  };
+
+  const handleAgree = () => {
+    setShowDisclaimer(false);
+    router.replace("/home"); // proceed to home after agree
   };
 
   return (
@@ -78,10 +93,34 @@ export default function Login() {
         <Text style={styles.buttonText}>Log In</Text>
       </Pressable>
 
-      {/* 👇 navigate to Sign Up */}
       <Pressable onPress={() => router.push("signup")}>
         <Text style={styles.link}>Don't have an account? Sign Up</Text>
       </Pressable>
+
+      {/* Disclaimer Modal */}
+      <Modal visible={showDisclaimer} transparent animationType="fade">
+        <View style={styles.modalContainer}>
+          <View style={styles.modalBox}>
+            <ScrollView>
+              <Text style={styles.modalTitle}>Read Carefully & Agree</Text>
+              <Text style={styles.modalText}>
+                ⚠️ EduTrack helps you manage your student life effectively.{"\n\n"}
+                📌 Track your Attendance{"\n"}
+                📌 Monitor your Grades{"\n"}
+                📌 Stay updated with Announcements{"\n"}
+                📌 View your Class Schedule{"\n"}
+                📌 Organize your tasks in the To-Do List{"\n\n"}
+                Disclaimer: This app is for educational use only. Your data will
+                be kept private and secure.
+              </Text>
+
+              <Pressable style={styles.modalButton} onPress={handleAgree}>
+                <Text style={styles.modalButtonText}>Agree & Continue</Text>
+              </Pressable>
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -113,4 +152,33 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     textAlign: "left",
   },
+
+  // Modal styles
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.6)",
+  },
+  modalBox: {
+    width: "40%",
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 20,
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 12,
+    textAlign: "center",
+  },
+  modalText: { fontSize: 15, lineHeight: 22, marginBottom: 20, textAlign: "justify" },
+  modalButton: {
+    backgroundColor: "#907df8ff",
+    paddingVertical: 14,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  modalButtonText: { color: "#fff", fontSize: 16, fontWeight: "bold" },
 });
