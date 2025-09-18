@@ -127,14 +127,18 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: "#222",
   },
-  row: { flexDirection: "row" },
+  row: { 
+    flexDirection: "row", 
+    justifyContent: "space-between" 
+  },
   cell: {
-    width: 180,
-    height: 50,
+    flex: 1,                 // responsive width
+    aspectRatio: 1,          // square shape
     borderWidth: 0.5,
     borderColor: "#ccc",
     justifyContent: "center",
     alignItems: "center",
+    margin: 1,               // spacing between boxes
   },
   cellText: { fontWeight: "bold", color: "#fff" },
   headerCell: {

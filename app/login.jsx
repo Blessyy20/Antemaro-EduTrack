@@ -21,6 +21,7 @@ export default function Login() {
 
   const handleLogin = async () => {
     setError("");
+
     if (!email || !password) {
       setError("Please fill all fields");
       Alert.alert("⚠️ Please fill all fields");
@@ -28,7 +29,9 @@ export default function Login() {
     }
 
     try {
+      // ✅ kuhaon ang user data gikan sa signup
       const userData = await AsyncStorage.getItem(`user_${email}`);
+
       if (!userData) {
         setError("User not found. Please sign up first.");
         Alert.alert("User not found", "Please sign up first.");
@@ -36,6 +39,8 @@ export default function Login() {
       }
 
       const user = JSON.parse(userData);
+
+      // ❌ wrong password
       if (user.password !== password) {
         setError("Your Password is Incorrect");
         Alert.alert("Your Password is Incorrect");
@@ -61,8 +66,8 @@ export default function Login() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welcome Back!🩷</Text>
+    <View style={[styles.container, { backgroundColor: "#c5ebf8ff" }]}>
+      <Text style={styles.title}>Welcome Back! 🩷</Text>
 
       <TextInput
         placeholder="Email"
@@ -93,7 +98,7 @@ export default function Login() {
         <Text style={styles.buttonText}>Log In</Text>
       </Pressable>
 
-      <Pressable onPress={() => router.push("signup")}>
+      <Pressable onPress={() => router.push("/signup")}>
         <Text style={styles.link}>Don't have an account? Sign Up</Text>
       </Pressable>
 
@@ -126,8 +131,18 @@ export default function Login() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center", padding: 20 },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 30, textAlign: "center" },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 30,
+    textAlign: "center",
+  },
   input: {
     width: "90%",
     padding: 12,
@@ -144,16 +159,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 10,
   },
-  buttonText: { color: "white", fontWeight: "bold" },
-  link: { color: "#957cf0ff", marginTop: 10 },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  link: {
+    color: "#957cf0ff",
+    marginTop: 10,
+  },
   error: {
     width: "90%",
     color: "#2e2236ff",
     marginBottom: 8,
     textAlign: "left",
   },
-
-  // Modal styles
   modalContainer: {
     flex: 1,
     justifyContent: "center",
@@ -173,12 +192,21 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     textAlign: "center",
   },
-  modalText: { fontSize: 15, lineHeight: 22, marginBottom: 20, textAlign: "justify" },
+  modalText: {
+    fontSize: 15,
+    lineHeight: 22,
+    marginBottom: 20,
+    textAlign: "justify",
+  },
   modalButton: {
     backgroundColor: "#907df8ff",
     paddingVertical: 14,
     borderRadius: 8,
     alignItems: "center",
   },
-  modalButtonText: { color: "#fff", fontSize: 16, fontWeight: "bold" },
+  modalButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });

@@ -1,108 +1,97 @@
-import { useState } from "react";
-import { View, Text, TextInput, Pressable, StyleSheet, Alert } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  StyleSheet,
+  Alert,
+} from "react-native";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Signup() {
   const router = useRouter();
+  const [name, setName] = useState("");
+  const [strand, setStrand] = useState("");
+  const [grade, setGrade] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
 
   const handleSignup = async () => {
-    setError("");
-    if (!email || !password || !confirmPassword) {
-      setError("Please fill all fields");
+    if (!name || !strand || !grade || !email || !password) {
       Alert.alert("⚠️ Please fill all fields");
       return;
     }
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      Alert.alert("Passwords do not match");
-      return;
-    }
-
     try {
-      const existingUser = await AsyncStorage.getItem(`user_${email}`);
-      if (existingUser) {
-        setError("User already exists. Please log in.");
-        Alert.alert("User already exists", "Please log in instead.");
-        return;
-      }
+      const userData = { name, strand, grade, email, password };
 
-      const newUser = { email, password };
-      await AsyncStorage.setItem(`user_${email}`, JSON.stringify(newUser));
+      // ✅ Save user data
+      await AsyncStorage.setItem(`user_${email}`, JSON.stringify(userData));
 
-      Alert.alert("✅ Success", "Account created! You can now log in.");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-      setError("");
-      router.replace("login");
+      Alert.alert("✅ Success", "Account created! Please login.");
+      router.replace("/login"); // go to login after signup
     } catch (e) {
       console.error(e);
-      setError("Something went wrong. Please try again.");
-      Alert.alert("Error", "Something went wrong. Please try again.");
+      Alert.alert("Error", "Something went wrong. Try again.");
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Create Account ✨</Text>
+    <View style={{ flex: 1, backgroundColor: "#c5ebf8ff" }}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Create Account 🌸</Text>
 
-      <TextInput
-        placeholder="Email"
-        value={email}
-        onChangeText={(text) => {
-          setEmail(text);
-          setError("");
-        }}
-        autoCapitalize="none"
-        keyboardType="email-address"
-        style={styles.input}
-      />
+        <TextInput
+          placeholder="Full Name"
+          value={name}
+          onChangeText={setName}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Strand"
+          value={strand}
+          onChangeText={setStrand}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Grade"
+          value={grade}
+          onChangeText={setGrade}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          style={styles.input}
+        />
 
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={(text) => {
-          setPassword(text);
-          setError("");
-        }}
-        secureTextEntry
-        style={styles.input}
-      />
+        <Pressable style={styles.button} onPress={handleSignup}>
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </Pressable>
 
-      <TextInput
-        placeholder="Confirm Password"
-        value={confirmPassword}
-        onChangeText={(text) => {
-          setConfirmPassword(text);
-          setError("");
-        }}
-        secureTextEntry
-        style={styles.input}
-      />
-
-      {error ? <Text style={styles.error}>{error}</Text> : null}
-
-      <Pressable style={styles.button} onPress={handleSignup}>
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </Pressable>
-
-      {/* 👇 navigate back to Login */}
-      <Pressable onPress={() => router.push("login")}>
-        <Text style={styles.link}>Already have an account? Log In</Text>
-      </Pressable>
+        <Pressable onPress={() => router.push("login")}>
+          <Text style={styles.link}>Already have an account? Log In</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: "center", alignItems: "center", padding: 20 },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 30, textAlign: "center" },
+  title: { fontSize: 24, fontWeight: "bold", marginBottom: 20 },
   input: {
     width: "90%",
     padding: 12,
@@ -121,10 +110,4 @@ const styles = StyleSheet.create({
   },
   buttonText: { color: "white", fontWeight: "bold" },
   link: { color: "#957cf0ff", marginTop: 10 },
-  error: {
-    width: "90%",
-    color: "#2e2236ff",
-    marginBottom: 8,
-    textAlign: "left",
-  },
 });

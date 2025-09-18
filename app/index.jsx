@@ -22,7 +22,7 @@ export default function Landing() {
       <Pressable
         style={({ pressed }) => [
           styles.button,
-          { backgroundColor: pressed ? "#7b5acb" : "#8c6efd" },
+          { backgroundColor: pressed ? "#ab93e2ff" : "#ab93e2ff" },
         ]}
         onPress={() => router.push("signup")}
       >
@@ -32,7 +32,7 @@ export default function Landing() {
       <Pressable
         style={({ pressed }) => [
           styles.button,
-          { backgroundColor: pressed ? "#c3b0e7ff" : "#baaaffff" },
+          { backgroundColor: pressed ? "#ab93e2ff" : "#ab93e2ff" },
         ]}
         onPress={() => router.push("login")}
       >
@@ -45,7 +45,7 @@ export default function Landing() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#b680e2ff",
+    backgroundColor: "#a48cb8ff",
     justifyContent: "center",
     alignItems: "center",
     padding: 24,
