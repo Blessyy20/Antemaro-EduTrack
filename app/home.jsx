@@ -1,59 +1,75 @@
 import { Link, router } from "expo-router";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  ScrollView,
+  SafeAreaView,
+} from "react-native";
 
 const Home = () => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>📚 E D U T R A C K</Text>
-      <Text style={styles.subtitle}>Stay on track, stay ahead.</Text>
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <Text style={styles.title}>📚 E D U T R A C K</Text>
+        <Text style={styles.subtitle}>Stay on track, stay ahead.</Text>
 
-      <View style={styles.grid}>
-        
-          <Pressable style={styles.button} onPress={() => router.push('/(tabs)/profile')}>
+        <View style={styles.grid}>
+          <Pressable
+            style={styles.button}
+            onPress={() => router.push("/(tabs)/profile")}
+          >
             <Text style={styles.buttonText}>👩 Profile</Text>
           </Pressable>
-        
 
-        
-          <Pressable style={styles.button} onPress={() => router.push('/(tabs)/schedule')}>
+          <Pressable
+            style={styles.button}
+            onPress={() => router.push("/(tabs)/schedule")}
+          >
             <Text style={styles.buttonText}>📅 Class Schedule</Text>
           </Pressable>
-        
 
-        
-          <Pressable style={styles.button} onPress={() => router.push('/(tabs)/attendance')}>
+          <Pressable
+            style={styles.button}
+            onPress={() => router.push("/(tabs)/attendance")}
+          >
             <Text style={styles.buttonText}>📊 Attendance</Text>
           </Pressable>
-        
 
-        
-          <Pressable style={styles.button} onPress={() => router.push('/(tabs)/to-do')}>
+          <Pressable
+            style={styles.button}
+            onPress={() => router.push("/(tabs)/to-do")}
+          >
             <Text style={styles.buttonText}>💭 To-Do</Text>
           </Pressable>
-        
 
-       
-          <Pressable style={styles.button} onPress={() => router.push('/(tabs)/grades')}>
+          <Pressable
+            style={styles.button}
+            onPress={() => router.push("/(tabs)/grades")}
+          >
             <Text style={styles.buttonText}>📝 View Grades</Text>
           </Pressable>
-        
 
-        
-          <Pressable style={styles.button} onPress={() => router.push('/(tabs)/announcements')}>
+          <Pressable
+            style={styles.button}
+            onPress={() => router.push("/(tabs)/announcements")}
+          >
             <Text style={styles.buttonText}>📢 Announcements</Text>
           </Pressable>
-        
-      </View>
-    </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
     backgroundColor: "#c0bbffff",
+  },
+  scrollContainer: {
+    alignItems: "center",
     padding: 20,
   },
   title: {
@@ -70,15 +86,14 @@ const styles = StyleSheet.create({
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "center",
+    justifyContent: "space-between",
+    width: "100%",
   },
   button: {
-    margin: 10,
-    paddingVertical: 14,
-    paddingHorizontal: 24,
+    marginBottom: 20,
     backgroundColor: "#b4a8c7ff",
     borderRadius: 14,
-    width: 150,
+    width: "47%",
     height: 120,
     alignItems: "center",
     justifyContent: "center",

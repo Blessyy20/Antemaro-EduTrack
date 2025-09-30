@@ -45,15 +45,9 @@ export default function Announcements() {
   };
 
   const handleDelete = (id) => {
-    Alert.alert("Delete announcement?", "Are you sure?", [
-      { text: "Cancel", style: "cancel" },
-      {
-        text: "Delete",
-        style: "destructive",
-        onPress: () => deleteAnnouncement(id),
-      },
-    ]);
-  };
+      deleteAnnouncement(id)
+  }
+  
 
   const handleEdit = (item) => {
     setEditingId(item.id);
